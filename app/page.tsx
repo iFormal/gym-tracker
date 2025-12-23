@@ -1,62 +1,78 @@
 import { createClient } from "./utils/supabaseServer";
 import { redirect } from "next/navigation";
 import WorkoutInput from "./components/WorkoutInput";
+import WorkoutItem from "./components/WorkoutItem";
+import SmartCalendar from "./components/SmartCalendar";
+import StatsDashboard from "./components/StatsDashboard";
 import MonthlyChart from "./components/MonthlyChart";
-import SignOutButton from "./components/SignOutButton";
+import ImportWorkouts from "./components/ImportWorkouts";
 
 export const revalidate = 0;
 
 export default async function Home() {
   const supabase = await createClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
-  }
+  if (!user) redirect("/login");
 
+  // Fetch workouts
   const { data: workouts, error } = await supabase
     .from("gym-session")
-    .select("*")
+    .select("*, created_at")
     .order("date", { ascending: false });
 
+  const safeWorkouts = workouts || [];
+
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 md:p-8 bg-gray-50 text-black">
-      <div className="w-full max-w-md flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-600">Gym Tracker</h1>
-        <SignOutButton />
+    <div className="pb-20 pt-6 animate-in fade-in duration-500">
+      <header className="mb-10">
+        <h1 className="text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
+        <p className="text-slate-600 text-lg">
+          Track your consistency, one day at a time.
+        </p>
+      </header>
+
+      <SmartCalendar workouts={safeWorkouts} />
+      <StatsDashboard workouts={safeWorkouts} />
+      <MonthlyChart workouts={safeWorkouts} />
+
+      <div className="mt-10 mb-12">
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Log Session
+          </h3>
+          <ImportWorkouts />
+        </div>
+        <WorkoutInput />
       </div>
 
-      <div className="w-full max-w-md">
-        {workouts && <MonthlyChart workouts={workouts} />}
-      </div>
+      <div className="mt-14">
+        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-5">
+          Recent Activity
+        </h3>
 
-      <WorkoutInput />
-
-      <div className="w-full max-w-md mt-8">
-        <h2 className="text-xl font-semibold mb-4">History</h2>
-        {!workouts || workouts.length === 0 ? (
-          <p className="text-gray-500 italic">No logs found.</p>
+        {safeWorkouts.length === 0 ? (
+          <div className="p-12 text-center bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200">
+            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl">💪</span>
+            </div>
+            <p className="text-slate-600 font-medium mb-1">
+              No workouts logged yet
+            </p>
+            <p className="text-sm text-slate-400">
+              Start your fitness journey by logging your first session above
+            </p>
+          </div>
         ) : (
-          <ul className="space-y-3">
-            {workouts.map((workout) => (
-              <li
-                key={workout.id}
-                className="bg-white p-4 rounded shadow border border-gray-200 flex justify-between items-center"
-              >
-                <span className="font-medium text-gray-800">
-                  {workout.notes}
-                </span>
-                <span className="text-xs text-gray-400">
-                  {new Date(workout.date).toLocaleDateString()}
-                </span>
-              </li>
+          <ul className="grid gap-3">
+            {safeWorkouts.map((workout) => (
+              <WorkoutItem key={workout.id} workout={workout} />
             ))}
           </ul>
         )}
       </div>
-    </main>
+    </div>
   );
 }

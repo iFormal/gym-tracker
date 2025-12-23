@@ -33,26 +33,25 @@ export default function WorkoutInput() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md mb-8">
-      <div className="mb-2">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Add New Session
-        </label>
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <textarea
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900"
+          className="w-full p-4 border-0 focus:ring-0 focus:outline-none text-slate-900 placeholder:text-slate-400 resize-none"
           rows={3}
-          placeholder="Paste your workout here... (e.g. Bench 5x5, Squat 3x5)"
+          placeholder="What did you do today? (e.g., Bench 5×5, Squat 3×5, or just hit 'Log' for a quick entry)"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
         />
+        <div className="px-4 pb-4 pt-2 bg-slate-50 border-t border-slate-100">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-orange-500 text-white font-semibold py-3 rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-200"
+          >
+            {loading ? "Saving..." : "Log Workout"}
+          </button>
+        </div>
       </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-      >
-        {loading ? "Saving..." : "Log Workout"}
-      </button>
     </form>
   );
 }
