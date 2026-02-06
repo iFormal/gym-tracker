@@ -24,7 +24,7 @@ export default function ImportWorkouts() {
         const match = line.match(/([A-Za-z]+)(?:\s+(\d{4}))?\s*-\s*([\d,\s]+)/);
         if (!match) {
           setError(
-            `Invalid format in line: "${line}". Use format: "Nov - 8,9,10" or "Nov 2024 - 8,9,10"`
+            `Invalid format in line: "${line}". Use format: "Nov - 8,9,10" or "Nov 2024 - 8,9,10"`,
           );
           setLoading(false);
           return;
@@ -51,7 +51,7 @@ export default function ImportWorkouts() {
           "dec",
         ];
         const monthIndex = monthNames.findIndex((m) =>
-          monthStr.toLowerCase().startsWith(m)
+          monthStr.toLowerCase().startsWith(m),
         );
 
         if (monthIndex === -1) {
@@ -66,7 +66,7 @@ export default function ImportWorkouts() {
             setLoading(false);
             return;
           }
-          const date = new Date(year, monthIndex, day);
+          const date = new Date(Date.UTC(year, monthIndex, day));
           allDates.push(date);
         }
       }

@@ -28,13 +28,22 @@ export default function MonthlyChart({ workouts }: { workouts: Workout[] }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const sessionsByMonth = workouts.reduce((acc, session) => {
-    const date = new Date(session.date);
-    const monthKey = date.toLocaleDateString("en-US", { month: "short" });
+  const currentYear = new Date().getFullYear();
 
-    acc[monthKey] = (acc[monthKey] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const sessionsByMonth = workouts.reduce(
+    (acc, session) => {
+      const date = new Date(session.date);
+      const year = date.getFullYear();
+
+      // Only count workouts from the current year
+      if (year === currentYear) {
+        const monthKey = date.toLocaleDateString("en-US", { month: "short" });
+        acc[monthKey] = (acc[monthKey] || 0) + 1;
+      }
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   const monthsOrder = [
     "Jan",
