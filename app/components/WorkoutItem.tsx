@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/navigation";
 import { Edit2, Trash2 } from "lucide-react";

@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
-import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,7 +71,7 @@ export default function Login() {
               </button>
             </form>
             <p className="text-sm text-slate-500 text-center mt-6">
-              We'll email you a login link. No passwords required!
+              We&apos;ll email you a login link. No passwords required!
             </p>
           </div>
         ) : (
@@ -97,7 +95,7 @@ export default function Login() {
               Check Your Email
             </h2>
             <p className="text-slate-600 mb-6">
-              We've sent your login link to <strong>{email}</strong>
+              We&apos;ve sent your login link to <strong>{email}</strong>
             </p>
             <p className="text-sm text-slate-500">
               Click the link in the email to sign in. You can close this page.

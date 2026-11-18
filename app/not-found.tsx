@@ -13,7 +13,7 @@ export default function NotFound() {
             Page Not Found
           </h2>
           <p className="text-slate-600 mb-8">
-            Looks like you've wandered off the workout path. Let's get you back
+            Looks like you&apos;ve wandered off the workout path. Let&apos;s get you back
             on track!
           </p>
         </div>

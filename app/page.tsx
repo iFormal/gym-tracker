@@ -6,6 +6,7 @@ import SmartCalendar from "./components/SmartCalendar";
 import StatsDashboard from "./components/StatsDashboard";
 import MonthlyChart from "./components/MonthlyChart";
 import ImportWorkouts from "./components/ImportWorkouts";
+import TodayCalorieWidget from "./components/TodayCalorieWidget";
 
 export const revalidate = 0;
 
@@ -27,12 +28,15 @@ export default async function Home() {
 
   return (
     <div className="pb-20 pt-6 animate-in fade-in duration-500">
-      <header className="mb-10">
+      <header className="mb-8">
         <h1 className="text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
         <p className="text-slate-600 text-lg">
           Track your consistency, one day at a time.
         </p>
       </header>
+
+      {/* Today's Calories Overview */}
+      <TodayCalorieWidget />
 
       <SmartCalendar workouts={safeWorkouts} />
       <StatsDashboard workouts={safeWorkouts} />
